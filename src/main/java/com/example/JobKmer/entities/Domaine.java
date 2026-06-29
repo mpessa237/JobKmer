@@ -9,5 +9,8 @@ public enum Domaine {
     CLIMATISATION,
     PEINTURE,
     JARDINAGE,
+    CARRELAGE,
+    STAFF,
+    GARAGISTE,
     AUTRE
 }
