@@ -5,7 +5,6 @@ import com.example.JobKmer.dtos.TechnicienRequest;
 import com.example.JobKmer.entities.Client;
 import com.example.JobKmer.entities.Role;
 import com.example.JobKmer.entities.Technicien;
-import com.example.JobKmer.entities.User;
 import com.example.JobKmer.repositories.ClientRepo;
 import com.example.JobKmer.repositories.TechnicienRepo;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class InscriptionService {
+public class
+InscriptionService {
 
     private final ClientRepo clientRepo;
     private final TechnicienRepo technicienRepo;
