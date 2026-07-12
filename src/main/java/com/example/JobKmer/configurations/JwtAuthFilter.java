@@ -1,6 +1,7 @@
 package com.example.JobKmer.configurations;
 
 import com.example.JobKmer.services.JwtService;
+import com.example.JobKmer.services.TokenBlacklist;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final TokenBlacklist tokenBlacklist;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -39,6 +41,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         // 3. Extraire le token (enlver "Bearer")
         final String token = authHeader.substring(7);
+
+        // Vérifie si le token est dans la listeNoire ou révoqu
+        if(tokenBlacklist.isBlacklisted(token)){
+            filterChain.doFilter(request, response);
+            return;
+        }
         final String email =  jwtService.extractEmail(token);
 
         // 4. Si email est valide et pas encore authentifié

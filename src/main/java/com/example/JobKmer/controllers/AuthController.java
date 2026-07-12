@@ -6,6 +6,7 @@ import com.example.JobKmer.dtos.LoginResponse;
 import com.example.JobKmer.dtos.TechnicienRequest;
 import com.example.JobKmer.services.AuthService;
 import com.example.JobKmer.services.InscriptionService;
+import com.example.JobKmer.services.TokenBlacklist;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ public class AuthController {
 
     private final InscriptionService inscriptionService;
     private final AuthService authService;
+    private final TokenBlacklist tokenBlacklist;
 
     // Inscription Client
     @PostMapping("/inscription")
@@ -36,7 +38,7 @@ public class AuthController {
         inscriptionService.inscriptionTechnicien(request);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body("Inscription technicien réussie ! Bienvenue sur JobKamer 🔧");
+                .body("Inscription technicien réussie ! Bienvenue sur JobKamer ! ");
     }
 
     // Connexion
@@ -51,8 +53,8 @@ public class AuthController {
     public ResponseEntity<String> logout(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            // Optionnel : extraire le token si tu veux le blacklister plus tard
             String token = authHeader.substring(7);
+            tokenBlacklist.blacklist(token);
         }
         
         // Vider le contexte de sécurité de Spring
